@@ -36,8 +36,8 @@ def process_user_query(state: SamarthGraphState) -> Dict[str, Any]:
     if entities_to_check:
         print(f"--- Found potential entities to check: {entities_to_check} ---")
         try:
-            url = os.getenv("SUPABASE_PROJECT_URL")
-            key = os.getenv("SUPABASE_API_KEY")
+            url = st.secrets["SUPABASE_PROJECT_URL"]
+            key = st.secrets["SUPABASE_API_KEY"]
             supabase: Client = create_client(url, key)
             for entity in entities_to_check:
                 query = f"SELECT DISTINCT state, district, crop, season FROM master_data_view WHERE state ILIKE '%{entity}%' OR district ILIKE '%{entity}%' OR crop ILIKE '%{entity}%' OR season ILIKE '%{entity}%' LIMIT 3"
@@ -47,7 +47,7 @@ def process_user_query(state: SamarthGraphState) -> Dict[str, Any]:
         except Exception as e:
             print(f"--- Value lookup failed: {e} ---")
 
-    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=os.getenv("GOOGLE_API_KEY"), temperature=0.2)
+    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=st.secrets["GOOGLE_API_KEY"], temperature=0.2)
     
     prompt_string = """You are a world-class SQL generation expert. Your task is to convert the user's query into a precise and correct SQL query for a PostgreSQL database.
 
@@ -124,8 +124,8 @@ def execute_sql_via_api(state: SamarthGraphState) -> dict:
         return {"error": "No SQL query found in state."}
 
     try:
-        url = os.getenv("SUPABASE_PROJECT_URL")
-        key = os.getenv("SUPABASE_API_KEY")
+        url = st.secrets["SUPABASE_PROJECT_URL"]
+        key = st.secrets["SUPABASE_API_KEY"]
         supabase: Client = create_client(url, key)
 
         response = supabase.rpc('execute_sql', {'query': sql_query}).execute()
@@ -164,7 +164,7 @@ def execute_sql_via_api(state: SamarthGraphState) -> dict:
 #     return {"verification": verification}
 
 def generate_summary(state: SamarthGraphState) -> Dict[str, str]:
-    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=os.getenv("GOOGLE_API_KEY"), temperature=0.2)
+    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=st.secrets["GOOGLE_API_KEY"], temperature=0.2)
     print("Node 4 : GENERATING NATURAL LANGUAGE SUMMARY")
     prompt_string = """You are an expert data analyst and SQL query expert, your task is to generate a natural language summary from the database result.
     Databse Result: {db_result}
@@ -252,4 +252,5 @@ if prompt := st.chat_input("Ask a question about India's agricultural data..."):
             response = final_state.get("summary", "Sorry, I encountered an error and could not find an answer.")
             st.markdown(response)
     
+
     st.session_state.messages.append({"role": "assistant", "content": response})
