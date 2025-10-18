@@ -66,7 +66,7 @@ This entire process is managed as a state machine within LangGraph, tracking the
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/Kush-fanta/Samarth-Q-A-on-Agriculture-using-Intelligent-AI-System/tree/main
-cd your-repo-name
+cd Samarth-Q-A-on-Agriculture-using-Intelligent-AI-System
 ```
 
 ### 2. Create your Environment File
