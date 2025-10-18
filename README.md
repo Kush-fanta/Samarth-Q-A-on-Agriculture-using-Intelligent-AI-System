@@ -65,7 +65,7 @@ This entire process is managed as a state machine within LangGraph, tracking the
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+git clone https://github.com/Kush-fanta/Samarth-Q-A-on-Agriculture-using-Intelligent-AI-System/tree/main
 cd your-repo-name
 ```
 
