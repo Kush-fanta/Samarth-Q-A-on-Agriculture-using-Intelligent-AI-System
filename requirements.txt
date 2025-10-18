@@ -1,0 +1,8 @@
+streamlit
+langgraph
+langchain-google-genai
+langchain-core
+supabase
+python-dotenv
+openai
+psycopg2-binary
